@@ -26,9 +26,9 @@
               <li class="nav-item">
                 <a class="nav-link active" aria-current="page" href="#">Home</a>
               </li>
-              <!-- <li class="nav-item">
-                  <a class="nav-link" href="mostrarApuestas.html">Apuestas</a>
-                </li> -->
+              <li class="nav-item">
+                <a class="nav-link" href="InsertarPersonaje.html">Insertar Personaje</a>
+              </li>
               <li class="nav-item dropdown">
                 <a
                   class="nav-link dropdown-toggle"
@@ -65,8 +65,12 @@
     <script src="js/bootstrap.bundle.js"></script>
 
     <script>
+        $(document).ready(function() {
+            cargarPersonajes();
+            cargarSerie();
+        })
       function cargarPersonajes() {
-        var idserie = parseInt(getParameterByName("serie"));
+        var idserie = parseInt(getParameterByName("idserie"));
         var request = "api/series/personajesserie/" + idserie;
 
         $.getJson(url + request, function (data) {
@@ -78,16 +82,17 @@
                 html += "<td>" + serie.idSerie + "</td>"
             html += "</tr>";
           });
+          $("#tablapersonajes").html(html)
         });
       }
       function cargarSeries() {
         var request = "api/Series/";
-        var localUrl = "http://127.0.0.1:5500/";
+        var localUrl = "http://127.0.0.1:5500/"
         $.getJSON(urlSeries + request, function (data) {
           console.log("leyendo...");
           var html = "";
           $.each(data, function (index, serie) {
-            html += `<li><a href="${localUrl}series.html?serie=${serie.idSerie}" class="dropdown-item"> ${serie.nombre}</a></li>`;
+            html += `<li><a href="${localUrl}series.html?idserie=${serie.idSerie}" class="dropdown-item"> ${serie.nombre}</a></li>`;
           });
           $("#series").append(html);
         });

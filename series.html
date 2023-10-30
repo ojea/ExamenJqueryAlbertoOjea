@@ -31,9 +31,9 @@
                 >Home</a
               >
             </li>
-            <!-- <li class="nav-item">
-                  <a class="nav-link" href="mostrarApuestas.html">Apuestas</a>
-              </li> -->
+            <li class="nav-item">
+              <a class="nav-link" href="InsertarPersonaje.html">Insertar Personaje</a>
+            </li>
             <li class="nav-item dropdown">
               <a
                 class="nav-link dropdown-toggle"
@@ -63,28 +63,27 @@
       var urlSeries = "https://apiseriespersonajes.azurewebsites.net/";
       $(document).ready(function () {
         detalleSerie();
-        cargarSerie();
+        cargarSeries();
       });
 
-      function detalleSerie() {
-        var param = getParameterByName("serie");
-        var request = "api/series/" + param;
+      function cargarSeries() {
+      var request = "api/series";
+      var html = " ";
 
-        console.log(urlSeries + request);
-        $.getJSON(urlSeries + request, function (data) {
-          var html = "";
-          console.log(data);
-        });
-
-        html += `<div class="card" style="width: 18rem;">
-                        <img src=${data.imagen} class="card-img-top" alt="...">
-                        <div class="card-body">
-                            <h5 class="card-title">${data.nombre}</h5>
-                            <p class="card-text">${data.puntuacion}</p>
-                        </div>
-                    </div>`;
-        $("#detalleSerie").html(html);
-      }
+      $.getJSON(urlApi + request, function (data) {
+          $.each(data, function (index, serie) {
+              console.log(data)
+              html += "<ul>";
+              html += "<li class='dropdown-item'>";
+              html += "<a class='btn btn-outline-success btn-sm' href='series.html?idSerie=" + serie.idSerie + "'>";
+              html += "<img width='40px' src='" + serie.imagen + "' alt='" + serie.nombre + "' />" + serie.nombre;
+              html += "</a>";
+              html += "</li>";
+              html += "</ul>";
+          })
+          $("#series").html(html);
+      })
+  }
 
       function cargarSeries() {
         var request = "api/Series/";
