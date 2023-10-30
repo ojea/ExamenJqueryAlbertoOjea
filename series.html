@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">Apuestas</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a
+                class="nav-link active"
+                aria-current="page"
+                href="homeEquipos.html"
+                >Home</a
+              >
+            </li>
+            <!-- <li class="nav-item">
+                  <a class="nav-link" href="mostrarApuestas.html">Apuestas</a>
+              </li> -->
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                Series
+              </a>
+              <ul id="series" class="dropdown-menu"></ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container">
+      <a class="btn btn-info" href="/homeSeries.html">Volver</a>
+      <div id="detalleSerie"></div>
+    </div>
+
+    <script src="js/jquery-3.7.1.min.js"></script>
+    <script src="js/bootstrap.bundle.js"></script>
+
+    <script>
+      var urlSeries = "https://apiseriespersonajes.azurewebsites.net/";
+      $(document).ready(function () {
+        detalleSerie();
+        cargarSerie();
+      });
+
+      function detalleSerie() {
+        var param = getParameterByName("serie");
+        var request = "api/series/" + param;
+
+        console.log(urlSeries + request);
+        $.getJSON(urlSeries + request, function (data) {
+          var html = "";
+          console.log(data);
+        });
+
+        html += `<div class="card" style="width: 18rem;">
+                        <img src=${data.imagen} class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title">${data.nombre}</h5>
+                            <p class="card-text">${data.puntuacion}</p>
+                        </div>
+                    </div>`;
+        $("#detalleSerie").html(html);
+      }
+
+      function cargarSeries() {
+        var request = "api/Series/";
+        var localUrl = "http://127.0.0.1:5500/";
+        $.getJSON(urlSeries + request, function (data) {
+          console.log("leyendo...");
+          var html = "";
+          $.each(data, function (index, serie) {
+            html += `
+                <li><a class="dropdown-item" href="${localUrl}series.html?serie=${serie.idSerie}">${serie.nombre}</a></li>
+                `;
+          });
+          $("#series").append(html);
+        });
+      }
+
+      function getParameterByName(name) {
+        name = name.replace(/[[]/, "\[").replace(/[]]/, "\]");
+        var regex = new RegExp("[\?&]" + name + "=([^&#]*)"),
+          results = regex.exec(location.search);
+        return results === null
+          ? ""
+          : decodeURIComponent(results[1].replace(/\+/g, " "));
+      }
+    </script>
+  </body>
+</html>
